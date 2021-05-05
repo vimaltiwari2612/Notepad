@@ -1,0 +1,196 @@
+<head>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/prettier@2.2.1/standalone.min.js" ></script>
+
+    <style>
+    
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked+.slider {
+            background-color: black;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px black;
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+
+        #ms_word_filtered_html {
+            height : 100vh;
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+    <form enctype="multipart/form-data">
+        <input id="upload" type=file accept="text" name="files[]" size=30>
+    </form>
+    <div class="spinner-border text-primary"></div>
+    
+    <label class="switch" >
+        
+        <input type="checkbox" onchange="changeTheme(this)"/>
+        <span class="slider round"></span>
+    </label>
+<center>
+    <div class="fileDetails">
+        File : 
+        <input type="text" class="filename"></input>
+        <button type="button" class="btn btn-success save btn-sm">Save & Download</button>
+    </div>
+    
+</center>
+    <textarea class="form-control border border-dark" row=500 id="ms_word_filtered_html" oninput="showOptions();"></textarea>
+
+</body>
+
+</html>
+
+
+
+<script>
+
+    showOpts = () => {
+        
+    }
+
+    showOptions = () =>{
+        var data = jQuery('textarea').val();
+        if(data === undefined || data == null || data.trim() == "" ){
+            
+            jQuery('.filename').val("");
+            jQuery('.fileDetails').hide();
+            jQuery('.save').hide();
+        }else{
+            jQuery('.save').show();
+            jQuery('.fileDetails').show();
+        }
+    }
+
+    function handleFileSelect(evt) {
+        jQuery('.spinner-border').show();
+        var files = evt.target.files; // FileList object
+
+        // use the 1st file from the list
+        f = files[0];
+       
+        var reader = new FileReader();
+
+        // Closure to capture the file information.
+        reader.onload = (function (theFile) {
+            return function (e) {
+
+                jQuery('#ms_word_filtered_html').val(e.target.result);
+                jQuery('.spinner-border').hide();
+                jQuery('.filename').val(f.name);
+                jQuery('.fileDetails').show();
+                jQuery('.save').show();
+            };
+        })(f);
+
+        // Read in the image file as a data URL.
+        reader.readAsText(f);
+    }
+
+    document.getElementById('upload').addEventListener('change', handleFileSelect, false);
+    jQuery('.spinner-border').hide();
+    jQuery('.fileDetails').hide();
+    jQuery('.save').hide();
+
+    changeTheme = (event) =>{
+        if(event.checked){
+            $('textArea').addClass('bg-dark');
+            $('textArea').addClass('text-white');
+        }else{
+            $('textArea').removeClass('bg-dark');
+            $('textArea').removeClass('text-white');
+        }
+    }
+
+    const downloadToFile = (content, filename, contentType) => {
+        const a = document.createElement('a');
+        const file = new Blob([content], {type: contentType});
+        
+        a.href= URL.createObjectURL(file);
+        a.download = filename;
+        a.click();
+      
+        URL.revokeObjectURL(a.href);
+      };
+   
+
+    $('.save').click(function(e){
+        var data = $('textarea').val();
+        if(jQuery('.filename').val() === undefined || jQuery('.filename').val().trim() === ""){
+            alert('File Name is needed ');
+            return;
+        }
+        downloadToFile(data, jQuery('.filename').val(), 'text/plain' );
+    });
+
+
+</script>
