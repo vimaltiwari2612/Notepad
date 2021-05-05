@@ -36,7 +36,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
+            background-color: #fdf8c8;
             -webkit-transition: .4s;
             transition: .4s;
         }
@@ -48,7 +48,7 @@
             width: 26px;
             left: 4px;
             bottom: 4px;
-            background-color: white;
+            background-color: GREY;
             -webkit-transition: .4s;
             transition: .4s;
         }
@@ -76,8 +76,40 @@
             border-radius: 50%;
         }
 
-        #ms_word_filtered_html {
-            height : 100vh;
+        .notepad{
+            height : 100%;
+            background-image: -webkit-linear-gradient(90deg, #d0a090 1px, #d0a090 1px), linear-gradient(#fdf8c8, #fdf8c8 23px, #ccd 23px, #ccd 24px, #fdf8c8 24px);
+            background-size: 2px 100%, 100% 24px;
+            background-position: 40px top, left 0px;
+            background-repeat: no-repeat, repeat;
+            Line-height: 24px !important;
+            background-attachment: local;
+            font-size: 14px;
+            font-family: Arial;
+            font-weight: normal;
+            color:black;
+            margin: 0;
+            padding-top: 3px;
+            padding-left: 50px;
+            width:100%;
+        }
+
+        .darkNotePad{
+            height : 100%;
+            background-image: -webkit-linear-gradient(90deg, #d0a090 1px, #d0a090 1px), linear-gradient(black, black 23px, #ccd 23px, #ccd 24px, #fdf8c8 24px);
+            background-size: 2px 100%, 100% 24px;
+            background-position: 40px top, left 0px;
+            background-repeat: no-repeat, repeat;
+            Line-height: 24px !important;
+            background-attachment: local;
+            font-size: 14px;
+            font-family: Arial;
+            font-weight: normal;
+            color:white;
+            margin: 0;
+            padding-top: 3px;
+            padding-left: 50px;
+            width:100%;
         }
 
     </style>
@@ -101,10 +133,11 @@
         File : 
         <input type="text" class="filename"></input>
         <button type="button" class="btn btn-success save btn-sm">Save & Download</button>
+        <button type="button" class="btn btn-Info copy btn-sm">Copy To Clipboard</button>
     </div>
     
 </center>
-    <textarea class="form-control border border-dark" row=500 id="ms_word_filtered_html" oninput="showOptions();"></textarea>
+    <textarea id="ms_word_filtered_html" class="notepad"  oninput="showOptions();"></textarea>
 
 </body>
 
@@ -162,12 +195,13 @@
     jQuery('.save').hide();
 
     changeTheme = (event) =>{
-        if(event.checked){
-            $('textArea').addClass('bg-dark');
-            $('textArea').addClass('text-white');
+        if(!event.checked){
+            $('textarea').addClass('notepad');
+            $('textarea').removeClass('darkNotePad');
+            
         }else{
-            $('textArea').removeClass('bg-dark');
-            $('textArea').removeClass('text-white');
+            $('textarea').addClass('darkNotePad');
+            $('textarea').removeClass('notepad');
         }
     }
 
@@ -192,5 +226,15 @@
         downloadToFile(data, jQuery('.filename').val(), 'text/plain' );
     });
 
+    function copyToClipboard() {
+        var copyText = $('textarea');
+        copyText.select();
+        document.execCommand("copy");
+        alert("Copied!!");
+      }
+
+      $('.copy').click(function(e){
+        copyToClipboard();
+      });
 
 </script>
