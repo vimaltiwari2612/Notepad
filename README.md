@@ -6,4 +6,5 @@ A notepad to edit and save anykind of files.
 - edit code
 - save using one click.
 
-![image](https://user-images.githubusercontent.com/22127564/117110181-5eff5b80-ada3-11eb-912d-e0ad979b7204.png)
+![image](https://user-images.githubusercontent.com/22127564/117126480-709f2e00-adb8-11eb-8efe-1eb6cf2266e8.png)
+
